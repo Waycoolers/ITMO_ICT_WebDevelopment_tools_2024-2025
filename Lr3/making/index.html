@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-        <title>Литкоды - My Docs</title>
+        <title>Выполнение - My Docs</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -138,7 +138,7 @@
             </li>
             <li class="drac-box">
                 <a href="../.."
-                    class="
+                    class=" active 
                     drac-anchor btn-toggle d-inline-flex align-items-center border-0 drac-text-purple--hover collapsed"
                     data-bs-toggle="collapse" data-bs-target="#лабораторная-3-collapse" aria-expanded="false">
                     Лабораторная 3
@@ -147,7 +147,7 @@
                     <ul class="mb-5 drac-list drac-list-none">
                             
     <li class="drac-box-ternary">
-        <a href="../../Lr3/main/"
+        <a href="../main/"
             class="
             drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
             Введение
@@ -155,8 +155,8 @@
     </li>
                             
     <li class="drac-box-ternary">
-        <a href="../../Lr3/making/"
-            class="
+        <a href="./"
+            class=" active 
             drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
             Выполнение
         </a>
@@ -165,8 +165,8 @@
                 </div>
             </li>
             <li class="drac-box">
-                <a href="./"
-                    class=" active 
+                <a href="../../leetcodes/main/"
+                    class="
                     drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
                     Литкоды
                 </a>
@@ -199,14 +199,14 @@
         <div class="container">
             <div class="row row-preview">
                 <div class="col">
-                    <a href="../../Lr3/making/"
+                    <a href="../main/"
                         class="btn-preview drac-btn drac-btn-outline drac-text-white drac-text-cyan-green--hover">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </div>
                 <div class="col">
-                    <a 
-                        class="btn-preview drac-btn drac-text-white--hover disabled" style="padding-left: 3%;">
+                    <a href="../../leetcodes/main/"
+                        class="btn-preview drac-btn drac-btn-outline drac-text-white drac-text-cyan-green--hover" style="padding-left: 3%;">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </div>
@@ -237,104 +237,132 @@
             <!-- block content -->
                 <section class="p-md-5 section-content">
     <article>
-        <p><h1 id="_1">Литкоды</h1>
-<h2 id="1431-kids-with-the-greatest-number-of-candies">1431. Kids With the Greatest Number of Candies</h2>
-<p>There are n kids with candies. You are given an integer array candies, where each candies[i] represents the number of candies the ith kid has, and an integer extraCandies, denoting the number of extra candies that you have.</p>
-<p>Return a boolean array result of length n, where result[i] is true if, after giving the ith kid all the extraCandies, they will have the greatest number of candies among all the kids, or false otherwise.</p>
-<p>Note that multiple kids can have the greatest number of candies.</p>
-<pre><code class="language-python">class Solution:
-    def kidsWithCandies(self, candies: List[int], extraCandies: int) -&gt; List[bool]:
-        max_candies = max(candies)
-        result = []
-        for candy in candies:
-            if candy + extraCandies &gt;= max_candies:
-                result.append(True)
-            else:
-                result.append(False)
-        return result
+        <p><h1 id="api">Создание эндпоинта для вызова парсера из api</h1>
+<pre><code class="language-python">@router.post(&quot;/parse&quot;)
+def parse(url: str):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        parser = BookParser(url=url)
+        asyncio.run(parser.run())
+        return {&quot;message&quot;: &quot;Parsing completed&quot;}
+    except requests.RequestException as e:
+        raise HTTPException(status_code=500, detail=str(e))
 </code></pre>
-<h2 id="1863-sum-of-all-subset-xor-totals">1863. Sum of All Subset XOR Totals</h2>
-<p>The XOR total of an array is defined as the bitwise XOR of all its elements, or 0 if the array is empty.</p>
-<p>For example, the XOR total of the array [2,5,6] is 2 XOR 5 XOR 6 = 1.
-Given an array nums, return the sum of all XOR totals for every subset of nums. </p>
-<p>Note: Subsets with the same elements should be counted multiple times.</p>
-<p>An array a is a subset of an array b if a can be obtained from b by deleting some (possibly zero) elements of b.</p>
-<pre><code class="language-python">class Solution:
-    def subsetXORSum(self, nums: List[int]) -&gt; int:
-        total = 0
-        n = len(nums)
-        for mask in range(1 &lt;&lt; n):
-            current_xor = 0
-            for i in range(n):
-                if mask &amp; (1 &lt;&lt; i):
-                    current_xor ^= nums[i]
-            total += current_xor
-        return total
+<h1 id="dockerfile">Создание Dockerfile</h1>
+<p>Dockerfile для api из лабораторной 1.</p>
+<pre><code class="language-dockerfile">FROM python:3.13
+
+WORKDIR /code
+
+COPY requirements .
+
+RUN pip install --no-cache-dir --upgrade -r /code/requirements
+
+COPY ./Lr1 /code/Lr1
+
+CMD [&quot;uvicorn&quot;, &quot;Lr1.main:app&quot;, &quot;--host&quot;, &quot;0.0.0.0&quot;, &quot;--port&quot;, &quot;8000&quot;]
 </code></pre>
-<h2 id="2413-smallest-even-multiple">2413. Smallest Even Multiple</h2>
-<p>Given a positive integer n, return the smallest positive integer that is a multiple of both 2 and n.</p>
-<pre><code class="language-python">class Solution:
-    def smallestEvenMultiple(self, n: int) -&gt; int:
-        return n if n % 2 == 0 else 2 * n
+<p>Dockerfile для парсера.</p>
+<pre><code class="language-dockerfile">FROM python:3.13
+
+WORKDIR /code
+
+COPY requirements .
+
+RUN pip install --no-cache-dir --upgrade -r /code/requirements
+
+COPY . .
+
+#CMD [&quot;uvicorn&quot;, &quot;Lr3.main:app&quot;, &quot;--host&quot;, &quot;0.0.0.0&quot;, &quot;--port&quot;, &quot;8000&quot;]
 </code></pre>
-<h2 id="2373-largest-local-values-in-a-matrix">2373. Largest Local Values in a Matrix</h2>
-<p>You are given an n x n integer matrix grid.</p>
-<p>Generate an integer matrix maxLocal of size (n - 2) x (n - 2) such that:</p>
-<p>maxLocal[i][j] is equal to the largest value of the 3 x 3 matrix in grid centered around row i + 1 and column j + 1.
-In other words, we want to find the largest value in every contiguous 3 x 3 matrix in grid.</p>
-<p>Return the generated matrix.</p>
-<pre><code class="language-python">class Solution:
-    def largestLocal(self, grid: List[List[int]]) -&gt; List[List[int]]:
-        n = len(grid)
-        maxLocal = [[0] * (n - 2) for _ in range(n - 2)]
-        for i in range(n - 2):
-            for j in range(n - 2):
-                max_val = 0
-                for x in range(i, i + 3):
-                    for y in range(j, j + 3):
-                        if grid[x][y] &gt; max_val:
-                            max_val = grid[x][y]
-                maxLocal[i][j] = max_val
-        return maxLocal
+<h1 id="docker-composeyml">Создание docker-compose.yml</h1>
+<pre><code class="language-yml">services:
+  lab_1_api:
+    build:
+      context: ../Lr1
+      dockerfile: Dockerfile
+    restart: always
+    container_name: lab_1_api
+    ports:
+      - &quot;8000:8000&quot;
+    depends_on:
+      - postgres
+    env_file:
+      - ../../.env
+
+  lab_3_api:
+    build:
+      context: ../Lr3
+      dockerfile: Dockerfile
+    restart: always
+    container_name: lab_3_api
+    command: uvicorn Lr3.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - &quot;8888:8000&quot;
+    env_file:
+      - ../../.env
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - &quot;6666:5432&quot;
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  lab_3_worker:
+    build:
+      context: ../Lr3
+      dockerfile: Dockerfile
+    restart: always
+    container_name: lab_3_worker
+    command: celery -A Lr3.tasks worker --loglevel=info
+    env_file:
+      - ../../.env
+    depends_on:
+      - postgres
+      - redis
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    ports:
+      - &quot;6379:6379&quot;
 </code></pre>
-<h2 id="1678-goal-parser-interpretation">1678. Goal Parser Interpretation</h2>
-<p>You own a Goal Parser that can interpret a string command. The command consists of an alphabet of "G", "()" and/or "(al)" in some order. The Goal Parser will interpret "G" as the string "G", "()" as the string "o", and "(al)" as the string "al". The interpreted strings are then concatenated in the original order.</p>
-<p>Given the string command, return the Goal Parser's interpretation of command.</p>
-<pre><code class="language-python">class Solution:
-    def interpret(self, command: str) -&gt; str:
-        result = []
-        i = 0
-        n = len(command)
-        while i &lt; n:
-            if command[i] == 'G':
-                result.append('G')
-                i += 1
-            elif command[i] == '(':
-                if i + 1 &lt; n and command[i+1] == ')':
-                    result.append('o')
-                    i += 2
-                elif i + 3 &lt; n and command[i+1] == 'a' and command[i+2] == 'l' and command[i+3] == ')':
-                    result.append('al')
-                    i += 4
-                else:
-                    i += 1
-            else:
-                i += 1
-        return ''.join(result)
+<h1 id="celery-redis">Создание очереди с помощью Celery и Redis</h1>
+<p>Создание задачи.</p>
+<pre><code class="language-python">celery_app = Celery('tasks', broker='redis://redis:6379/0', backend='redis://redis:6379/0')
+
+
+@celery_app.task
+def parse_task(url: str):
+    parser = BookParser(url=url)
+    return asyncio.run(parser.run(count_of_workers=10))
 </code></pre>
-<h2 id="2798-number-of-employees-who-met-the-target">2798. Number of Employees Who Met the Target</h2>
-<p>There are n employees in a company, numbered from 0 to n - 1. Each employee i has worked for hours[i] hours in the company.</p>
-<p>The company requires each employee to work for at least target hours.</p>
-<p>You are given a 0-indexed array of non-negative integers hours of length n and a non-negative integer target.</p>
-<p>Return the integer denoting the number of employees who worked at least target hours.</p>
-<pre><code class="language-python">class Solution:
-    def numberOfEmployeesWhoMetTarget(self, hours: List[int], target: int) -&gt; int:
-        count = 0
-        for hour in hours:
-            if hour &gt;= target:
-                count += 1
-        return count
-</code></pre></p>
+<p>Эндпоинт для добавления задачи в очередь.</p>
+<pre><code class="language-python">@router.post(&quot;/parse/task&quot;)
+async def parse_task_create(url: str):
+    task = parse_task.delay(url)
+    return {&quot;task&quot;: task.id}
+</code></pre>
+<p>Эндпоинт для получения задачи по id.</p>
+<pre><code class="language-python">@router.get(&quot;/parse/task/{task_id}&quot;)
+async def get_task(task_id: str):
+    task = parse_task.AsyncResult(task_id)
+    return {&quot;task&quot;: task.id, &quot;status&quot;: task.status}
+</code></pre>
+<h1 id="_1">Результат</h1>
+<p><img alt="img.png" src="../img.png" /></p></p>
     </article>
 </section>
             <!-- endblock -->
